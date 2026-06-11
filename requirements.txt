@@ -1,0 +1,7 @@
+# 핵심
+faster-whisper>=1.0
+av>=11            # 오디오 디코딩 (별도 ffmpeg 불필요)
+
+# GPU(NVIDIA) 사용 시 — CUDA 12 런타임 DLL (Windows). CPU만 쓸 거면 생략 가능.
+nvidia-cublas-cu12
+nvidia-cudnn-cu12

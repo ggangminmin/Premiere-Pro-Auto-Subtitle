@@ -1,0 +1,13 @@
+{
+  "prproj": "C:/Users/이름/Desktop/내프로젝트/프로젝트.prproj",
+  "sequence": "시퀀스 06",
+  "audio_dir": "C:/Users/이름/Desktop/내프로젝트/sing list",
+  "lyrics_dir": "C:/Users/이름/Desktop/내프로젝트/노래 가사",
+  "output_dir": "C:/Users/이름/Desktop/내프로젝트/자막출력",
+  "output_basename": "시퀀스06_자막",
+  "language": "ja",
+  "model": "medium",
+  "device": "cuda",
+  "compute_type": "float16",
+  "split_gap": 0.8
+}
