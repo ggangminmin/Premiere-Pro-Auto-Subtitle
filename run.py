@@ -39,11 +39,10 @@ def find_lyric(lyrics_dir, number):
     return None
 
 
-def main(cfg_path):
-    cfg = json.load(open(cfg_path, encoding="utf-8"))
+def run(cfg, out_default=None):
     prproj = cfg["prproj"]
     seq = cfg["sequence"]
-    out_dir = cfg.get("output_dir") or os.path.dirname(os.path.abspath(cfg_path))
+    out_dir = cfg.get("output_dir") or out_default or os.path.dirname(os.path.abspath(prproj))
     audio_dir = cfg.get("audio_dir")            # path 없을 때 폴백
     lyrics_dir = cfg.get("lyrics_dir")
     language = cfg.get("language", "ja")
@@ -112,12 +111,38 @@ def main(cfg_path):
         print(f"   한일통합 SRT: {n_both}줄, 한국어 SRT: {n_ko}줄")
     else:
         print("   (번역 전 — 'ko' 가 비어 있어 일본어 SRT만 생성됨)")
+        print("\n  ▶ 한국어 자막을 만들려면, 이 터미널의 AI 에게 이렇게 말하세요:")
+        print(f'      "{os.path.basename(ws_path)} 파일의 ja 를 한국어로 번역해서 ko 칸을 채워줘"')
+        print("    그런 다음 같은 명령을 다시 실행하면 한일통합/한국어 SRT 가 생성됩니다.")
 
     print("\n완료. 출력 폴더:", out_dir)
 
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) < 2:
-        print("usage: python run.py config.json")
+        print("usage:")
+        print("  python run.py config.json                    # 설정 파일로 실행")
+        print("  python run.py \"프로젝트.prproj 또는 폴더\"      # 자동 설정 후 실행")
+        print("  python run.py \"프로젝트.prproj\" \"시퀀스 06\"   # 시퀀스 지정")
         sys.exit(1)
-    main(sys.argv[1])
+
+    arg = sys.argv[1]
+    if arg.lower().endswith(".json"):
+        cfg = json.load(open(arg, encoding="utf-8"))
+        run(cfg, out_default=os.path.dirname(os.path.abspath(arg)))
+    else:
+        # 자동 설정 모드: .prproj / 폴더 경로만 받아 알아서 설정
+        import autoconfig
+        seq = sys.argv[2] if len(sys.argv) > 2 else None
+        print("[자동 설정] 프로젝트 분석 중 …")
+        cfg = autoconfig.build_config(arg, sequence=seq)
+        # 생성된 설정을 프로젝트 폴더에 저장(다음에 재사용/수정 가능)
+        proj_dir = os.path.dirname(os.path.abspath(cfg["prproj"]))
+        cfg_out = os.path.join(proj_dir, f"{cfg['output_basename']}_config.json")
+        json.dump(cfg, open(cfg_out, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
+        print(f"[자동 설정] 설정 저장 → {cfg_out}\n")
+        run(cfg)
+
+
+if __name__ == "__main__":
+    main()

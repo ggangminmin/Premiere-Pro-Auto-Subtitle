@@ -49,7 +49,19 @@ pip install -r requirements.txt
 
 ## 사용법
 
-### 1) 설정 파일 만들기
+### ⚡ 가장 간단한 방법 — 자동 설정 (다른 영상에도 그대로)
+프로젝트 경로만 주면 **시퀀스·오디오·가사 폴더를 알아서 찾아** 실행합니다.
+```bash
+python run.py "C:/.../내프로젝트.prproj"
+# 또는 프로젝트 폴더만 줘도 됨
+python run.py "C:/.../내프로젝트폴더"
+# 특정 시퀀스를 지정하려면
+python run.py "C:/.../내프로젝트.prproj" "시퀀스 03"
+```
+- 오디오 클립이 가장 많은 시퀀스를 자동 선택하고, 설정을 `*_config.json` 으로 저장합니다.
+- 다른 영상도 경로만 바꿔 같은 명령이면 끝. (아래 수동 설정은 세밀 조정용)
+
+### 1) (수동) 설정 파일 만들기
 `config.example.json` 을 복사해 `config.json` 으로 만들고 경로를 수정합니다.
 
 ```json
@@ -79,11 +91,17 @@ python run.py config.json
 - `시퀀스06_자막_translation.json` — **번역 워크시트**
 
 ### 3) 번역 (한국어 자막을 원할 때)
-`_translation.json` 의 각 줄 `"ko"` 칸에 한국어 번역을 채웁니다.
-(직접 번역하거나, ChatGPT/Claude 에 "ja 를 ko 로 번역해줘" 식으로 맡겨도 됩니다.)
-그리고 **다시 실행**하면 통합/한국어 SRT가 추가로 생성됩니다.
+`_translation.json` 의 각 줄 `"ko"` 칸에 한국어 번역을 채우면 됩니다.
+
+**가장 쉬운 방법 — 터미널의 AI 에게 시키기** (Claude Code 등):
+> `시퀀스06_자막_translation.json 파일의 ja 를 한국어로 번역해서 ko 칸을 채워줘`
+
+→ 별도 API 키 없이, 터미널에 있는 AI 가 번역해 줍니다.
+(직접 번역하거나 ChatGPT 등에 붙여넣어도 됩니다.)
+
+그리고 **같은 명령을 다시 실행**하면 통합/한국어 SRT 가 추가로 생성됩니다.
 ```bash
-python run.py config.json
+python run.py config.json        # (또는 자동 설정 모드면 같은 프로젝트 경로로 재실행)
 ```
 - `시퀀스06_자막_한일통합.srt` — 한국어(위)+일본어(아래)
 - `시퀀스06_자막_한국어.srt` — 한국어만
