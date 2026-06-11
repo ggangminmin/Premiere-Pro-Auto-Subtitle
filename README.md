@@ -99,6 +99,9 @@ python run.py config.json
 → 별도 API 키 없이, 터미널에 있는 AI 가 번역해 줍니다.
 (직접 번역하거나 ChatGPT 등에 붙여넣어도 됩니다.)
 
+> 💡 한 줄(한 큐)에 가사 두 줄이 붙어 있으면, **`ja`·`ko` 양쪽 같은 위치에 ` / `** 를 넣어
+> 주세요. SRT 생성 시 자동으로 별도 큐로 분리됩니다. (자세히: [docs/RULES.md](docs/RULES.md) §2)
+
 그리고 **같은 명령을 다시 실행**하면 통합/한국어 SRT 가 추가로 생성됩니다.
 ```bash
 python run.py config.json        # (또는 자동 설정 모드면 같은 프로젝트 경로로 재실행)
